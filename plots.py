@@ -6,11 +6,6 @@ from matplotlib.ticker import PercentFormatter
 from wordcloud import WordCloud
 import math
 
-sns.set();
-
-train = pd.read_csv("train_prep.csv");
-test = pd.read_csv("test_prep.csv");
-
 # print(train["Media"].value_counts())
 
 def bar(dataset,column,xlabel,title,hue=None,rotation=0,showPercentages=True,showCount=False,size="medium",endcodeLabels=True):
@@ -99,6 +94,11 @@ def wordcloud_plot(data,title,freq=False):
     plt.imshow(wordcloud)
     plt.title(title)
     plt.axis("off")
+
+sns.set();
+
+train = pd.read_csv("train_prep.csv");
+test = pd.read_csv("test_prep.csv");
 
 fig = plt.figure(figsize=(14, 6));
 bar(train,'AdoptionSpeed','Adoption Speed','Adoption speed classes rates');
