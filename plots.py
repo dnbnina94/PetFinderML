@@ -71,7 +71,7 @@ def prop_stacked_bar(dataset,featureX,featureY,ylabel,xlabel,title,rotate=False,
         plt.xticks(ind, ftsX);
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
-    # plt.legend(loc="upper right")
+    plt.legend(loc="upper right")
     plt.title(title);
 
     if rotate:
@@ -120,11 +120,10 @@ plt.subplot2grid((2,3), (0, 1), colspan=1);
 prop_stacked_bar(train, 'State', 'AdoptionSpeed', 'Adoption Speed Rate', 'State', 'Adoption Speed Rate wrt State',rotate=True);
 plt.subplot2grid((2,3), (0, 2), colspan=1);
 bar(test,'State','State','States (Test Set)',rotation=45,size="xx-small");
-train.loc[(train["State"] != "Selangor") & (train["State"] != "Kuala Lumpur"), "State"] = 'Other'
 plt.subplot2grid((2,3), (1, 0), colspan=1);
-bar(train,'State','State','States',rotation=45,size="xx-small");
+bar(train,'StateCat','State','State Categories',rotation=45,size="xx-small");
 plt.subplot2grid((2,3), (1, 1), colspan=1);
-prop_stacked_bar(train, 'State', 'AdoptionSpeed', 'Adoption Speed Rate', 'State', 'Adoption Speed Rate wrt State',rotate=True);
+prop_stacked_bar(train, 'StateCat', 'AdoptionSpeed', 'Adoption Speed Rate', 'State', 'Adoption Speed Rate wrt State',rotate=True);
 plt.tight_layout()
 fig.canvas.set_window_title('State')
 
@@ -188,12 +187,6 @@ plt.subplot2grid((2, 3), (0, 1), colspan=1);
 bar(train,'AgeAges', 'Pet Age', 'Pet Age', showPercentages=False, showCount=True, size="xx-small");
 plt.subplot2grid((2,3), (0, 2), colspan=1);
 prop_stacked_bar(train, 'AgeAges', 'AdoptionSpeed', 'Adoption Speed Rate', 'Pet Age', 'Adoption Speed Rate wrt Pet Age');
-train['AgeCat'] = train['Age'].apply(lambda x: "0" if x < 6 else
-                                             "1" if x >= 6 and x < 12 else
-                                             "2" if x >= 12 and x < 36 else
-                                             "3" if x >= 36 and x < 60 else
-                                             "4" if x >= 60 and x < 96 else
-                                             "5");
 plt.subplot2grid((2,3), (1, 0), colspan=1);
 prop_stacked_bar(train, 'AgeCat', 'AdoptionSpeed', 'Adoption Speed Rate', 'Pet Age Category', 'Adoption Speed Rate wrt Pet Age Category');
 plt.subplot2grid((2,3), (1, 1), colspan=1);

@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import math
+import os
 
 print('Enter file name:')
 x = input()
@@ -15,6 +16,7 @@ df['Color1'] = df['Color1'].apply(lambda x: colors.loc[colors['ColorID'] == x]['
 df['Color2'] = df['Color2'].apply(lambda x: colors.loc[colors['ColorID'] == x]['ColorName'].iloc[0]);
 df['Color3'] = df['Color3'].apply(lambda x: colors.loc[colors['ColorID'] == x]['ColorName'].iloc[0]);
 df['State'] = df['State'].apply(lambda x: states.loc[states['StateID'] == x]['StateName'].iloc[0]);
+df['StateCat'] = df['State'].apply(lambda x: 'Other' if (x != 'Selangor' and x != 'Kuala Lumpur') else x);
 df['Breed1'] = df['Breed1'].apply(lambda x: breeds.loc[breeds['BreedID'] == x]['BreedName'].iloc[0]);
 df['Breed1'].fillna('')
 df['Breed2'] = df['Breed2'].apply(lambda x: breeds.loc[breeds['BreedID'] == x]['BreedName'].iloc[0]);
@@ -54,11 +56,11 @@ df['MaturitySize'] = df['MaturitySize'].apply(lambda x: "small" if x == 1 else
                                                                ("extra large" if x == 4 else "not specified"))));
 
 df['FeeCat'] = df['Fee'].apply(lambda x: "0" if x == 0 else 
-                                           ("[1,25)" if x >= 1 and x < 25 else 
-                                           ("[25,59)" if x >= 25 and x < 59 else 
-                                           ("[59,108)" if x >= 59 and x < 108 else 
-                                           ("[108,210)" if x >= 108 and x < 210 else
-                                            "[210,3000]")))))
+                                        ("[1,25)" if x >= 1 and x < 25 else 
+                                        ("[25,59)" if x >= 25 and x < 59 else 
+                                        ("[59,108)" if x >= 59 and x < 108 else 
+                                        ("[108,210)" if x >= 108 and x < 210 else
+                                         "[210,3000]")))))
 
 df['DescLength'] = df['Description'].apply(lambda x: len(str(x).split()))
 df['HasDesc'] = 'Yes'
@@ -70,4 +72,13 @@ df['Health'] = df['Health'].apply(lambda x: 'Healthy' if x == 1 else
                                            ('Minor injury' if x == 2 else 
                                            ('Serious injury' if x == 3 else 'Not Sure')))
 
+df['AgeCat'] = df['Age'].apply(lambda x: "[0,6)" if x < 6 else
+                                         "[6,12)" if x >= 6 and x < 12 else
+                                         "[12,36)" if x >= 12 and x < 36 else
+                                         "[36,60)" if x >= 36 and x < 60 else
+                                         "[60,96)" if x >= 60 and x < 96 else
+                                         "96+");
+
+if os.path.exists(x+'_prep.csv'):
+  os.remove(x+'_prep.csv')
 df.to_csv(x+'_prep.csv')

@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import math
 
-from prep_model import dftrain,x_train_scaled,x_test_scaled,x_train,x_test,y_train,y_test,column_trans
+from prep_model import dftrain,x_train_scaled,x_test_scaled,x_train,x_test,y_train,y_test,column_trans,one_hot_cols
 
 generalized_tree = tree.DecisionTreeClassifier(
     random_state = 1,
@@ -24,11 +24,16 @@ numOfFeatures = 30
 
 indices = indices[0:numOfFeatures]
 
-names = [column_trans.get_feature_names()[i] for i in indices]
+feature_names = [column_trans.get_feature_names()[i] for i in indices]
+for i,v in enumerate(one_hot_cols):
+    matchingStr = 'onehotencoder__x'+str(i)+'_'
+    for j,feature in enumerate(feature_names):
+        if matchingStr in feature:
+            feature_names[j] = feature.replace(matchingStr, v+'.')
 
 fig = plt.figure(figsize=(14, 6))
 plt.title("Decision Tree Feature Importance")
 plt.barh(range(numOfFeatures), importances[indices], align='center')
-plt.yticks(range(numOfFeatures), names)
+plt.yticks(range(numOfFeatures), feature_names)
 plt.tight_layout()
 plt.show()
