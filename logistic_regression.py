@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 
-from prep_model import dftrain,x_train_scaled,x_test_scaled,x_train,x_test,y_train,y_test,column_trans,one_hot_cols
+from prep_model import dftrain,x_train_scaled,x_test_scaled,x_train,x_test,y_train,y_test,column_trans,one_hot_cols,x_real_test_scaled
 
 def show_plot(index):
     indicies = np.argsort(abs(logReg.coef_[index]))[0:30]
@@ -26,6 +26,8 @@ def show_plot(index):
 
 logReg = LogisticRegression()
 logReg.fit(x_train_scaled, y_train)
+
+# logReg.predict(x_real_test_scaled)
 
 print("Logistic Regression score:", logReg.score(x_test_scaled, y_test))
 

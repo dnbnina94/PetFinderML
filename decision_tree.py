@@ -9,9 +9,9 @@ import math
 from prep_model import dftrain,x_train_scaled,x_test_scaled,x_train,x_test,y_train,y_test,column_trans,one_hot_cols
 
 generalized_tree = tree.DecisionTreeClassifier(
-    random_state = 1,
-    max_depth=10,
-    min_samples_split = 2
+    # random_state = 1,
+    max_depth=5,
+    # min_samples_split = 2
 )
 generalized_tree.fit(x_train_scaled, y_train)
 

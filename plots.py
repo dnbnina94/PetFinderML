@@ -6,10 +6,7 @@ from matplotlib.ticker import PercentFormatter
 from wordcloud import WordCloud
 import math
 
-# print(train["Media"].value_counts())
-
 def bar(dataset,column,xlabel,title,hue=None,rotation=0,showPercentages=True,showCount=False,size="medium",endcodeLabels=True):
-    # plt.figure(figsize=(14, 6));
 
     df = dataset[column].value_counts().sort_index();
     ax = df.plot(kind="bar");
@@ -276,12 +273,18 @@ plt.tight_layout()
 fig.canvas.set_window_title('Fee')
 
 fig = plt.figure(figsize=(14, 6));
-plt.subplot2grid((1,3), (0, 0), colspan=1);
+plt.subplot2grid((2,3), (0, 0), colspan=1);
 basic_plot(train,"DescLength", "Count", "Description Length", "Description Length")
-plt.subplot2grid((1,3), (0, 1), colspan=1);
+plt.subplot2grid((2,3), (0, 1), colspan=1);
 bar(train,'HasDesc', 'Has Description', 'Has Description');
-plt.subplot2grid((1,3), (0, 2), colspan=1);
+plt.subplot2grid((2,3), (0, 2), colspan=1);
 prop_stacked_bar(train, 'HasDesc', 'AdoptionSpeed', 'Adoption Speed Rate', 'Has Description', 'Adoption Speed Rate wrt Has Description');
+plt.subplot2grid((2,3), (1, 0), colspan=1);
+bar(train,'Language', 'Description Language', 'Description Language');
+plt.subplot2grid((2,3), (1, 1), colspan=1);
+prop_stacked_bar(train, 'Language', 'AdoptionSpeed', 'Adoption Speed Rate', 'Description Language', 'Adoption Speed Rate wrt Desc Language');
+plt.subplot2grid((2,3), (1, 2), colspan=1);
+basic_plot(train,"Score", "Count", "Description Score", "Description Score")
 plt.tight_layout()
 fig.canvas.set_window_title('Description')
 

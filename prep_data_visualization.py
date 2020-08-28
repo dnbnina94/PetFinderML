@@ -6,10 +6,12 @@ import os
 print('Enter file name:')
 x = input()
 
-df = pd.read_csv(x+".csv");
-states = pd.read_csv("StateLabels.csv");
-breeds = pd.read_csv("BreedLabels.csv");
-colors = pd.read_csv("ColorLabels.csv");
+df = pd.read_csv(x+".csv")
+imgFeatures = pd.read_csv(x+'_img_features.csv')
+dfSentiment = pd.read_csv(x+'_sentiment_features.csv')
+states = pd.read_csv("StateLabels.csv")
+breeds = pd.read_csv("BreedLabels.csv")
+colors = pd.read_csv("ColorLabels.csv")
 
 df['Type'] = df['Type'].apply(lambda x: "dogs" if x == 1 else "cats");
 df['Color1'] = df['Color1'].apply(lambda x: colors.loc[colors['ColorID'] == x]['ColorName'].iloc[0]);
@@ -78,6 +80,9 @@ df['AgeCat'] = df['Age'].apply(lambda x: "[0,6)" if x < 6 else
                                          "[36,60)" if x >= 36 and x < 60 else
                                          "[60,96)" if x >= 60 and x < 96 else
                                          "96+");
+
+df = pd.merge(df, imgFeatures, on=['PetID'])
+df = pd.merge(df, dfSentiment, on=['PetID'])
 
 if os.path.exists(x+'_prep.csv'):
   os.remove(x+'_prep.csv')
