@@ -24,14 +24,11 @@ one_hot_cols = ['StateCat','Color1','Breed1','PureBreed','RescuerID','Health','G
 
 X = dftrain.drop('AdoptionSpeed', axis=1)
 column_trans = make_column_transformer(
-    (OneHotEncoder(), one_hot_cols),
+    (OneHotEncoder(handle_unknown='ignore'), one_hot_cols),
     remainder='passthrough')
 X = column_trans.fit_transform(X)
 
-column_trans_test = make_column_transformer(
-    (OneHotEncoder(), one_hot_cols),
-    remainder='passthrough')
-X_test = column_trans_test.fit_transform(dftest)
+X_test = column_trans.transform(dftest)
 
 x_train, x_test, y_train, y_test = train_test_split(X, dftrain['AdoptionSpeed'])
 

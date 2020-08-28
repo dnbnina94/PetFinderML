@@ -27,7 +27,7 @@ def show_plot(index):
 logReg = LogisticRegression()
 logReg.fit(x_train_scaled, y_train)
 
-# logReg.predict(x_real_test_scaled)
+print(len(logReg.predict(x_real_test_scaled)))
 
 print("Logistic Regression score:", logReg.score(x_test_scaled, y_test))
 
