@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 from sklearn.linear_model import LogisticRegression
 
 from prep_model import dftrain,x_train_scaled,x_test_scaled,x_train,x_test,y_train,y_test,column_trans,one_hot_cols,x_real_test_scaled
@@ -20,14 +21,20 @@ def show_plot(index):
     fig = plt.figure(figsize=(14, 6))
     plt.title("Logistic Regression Class " + str(index))
     plt.bar(feature_names, coefficients)
-    plt.setp(plt.gca().get_xticklabels(), rotation=45, horizontalalignment='right');
+    plt.setp(plt.gca().get_xticklabels(), rotation=45, horizontalalignment='right')
     plt.tight_layout()
 
 
-logReg = LogisticRegression()
+logReg = LogisticRegression(max_iter=2000)
 logReg.fit(x_train_scaled, y_train)
 
-print(len(logReg.predict(x_real_test_scaled)))
+result = logReg.predict(x_real_test_scaled)
+sample_submission = pd.read_csv('sample_submission.csv')
+sample_submission['AdoptionSpeed'] = result
+
+if os.path.exists('./submissions/log_reg_submission.csv'):
+  os.remove('./submissions/log_reg_submission.csv')
+sample_submission.to_csv('./submissions/log_reg_submission.csv', index=False)
 
 print("Logistic Regression score:", logReg.score(x_test_scaled, y_test))
 

@@ -10,8 +10,6 @@ from sklearn.compose import make_column_transformer
 
 dftrain = pd.read_csv('train_prep.csv')
 dftest = pd.read_csv('test_prep.csv')
-dftrain = dftrain.drop(dftrain.columns[0], axis=1)
-dftest = dftest.drop(dftest.columns[0], axis=1)
 
 dropCols = ['PetID','Name','Description','BadName','Color2','Color3', 
               'VideoAmt','Colorful','HasDesc','FeeCat','AgeCat','HasPhotos','Breed2','HasVideos','State']

@@ -1,12 +1,11 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 from sklearn import tree, model_selection
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 import math
 
-from prep_model import dftrain,x_train_scaled,x_test_scaled,x_train,x_test,y_train,y_test,column_trans,one_hot_cols
+from prep_model import dftrain,x_train_scaled,x_test_scaled,x_train,x_test,y_train,y_test,column_trans,one_hot_cols,x_real_test_scaled
 
 generalized_tree = tree.DecisionTreeClassifier(
     # random_state = 1,
@@ -15,7 +14,15 @@ generalized_tree = tree.DecisionTreeClassifier(
 )
 generalized_tree.fit(x_train_scaled, y_train)
 
-print(generalized_tree.score(x_test_scaled, y_test))
+result = generalized_tree.predict(x_real_test_scaled)
+sample_submission = pd.read_csv('sample_submission.csv')
+sample_submission['AdoptionSpeed'] = result
+
+if os.path.exists('./submissions/dec_tree_submission.csv'):
+  os.remove('./submissions/dec_tree_submission.csv')
+sample_submission.to_csv('./submissions/dec_tree_submission.csv', index=False)
+
+print("Decision Tree Score: ", generalized_tree.score(x_test_scaled, y_test))
 
 importances = generalized_tree.feature_importances_
 indices = np.argsort(importances)[::-1]
